@@ -6,7 +6,11 @@ if(${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     message(FATAL "Binary dir cannot be the same as source dir")
 endif()
 
-add_executable(glsl-editor)
+if(MSVC)
+    add_executable(glsl-editor WIN32)
+else()
+    add_executable(glsl-editor)
+endif()
 
 set_target_properties(glsl-editor
     PROPERTIES
