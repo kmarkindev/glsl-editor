@@ -1,3 +1,6 @@
 [submodule "3rdparty/wxWidgets"]
 	path = 3rdparty/wxWidgets
 	url = https://github.com/wxWidgets/wxWidgets.git
+[submodule "3rdparty/glm"]
+	path = 3rdparty/glm
+	url = https://github.com/g-truc/glm.git

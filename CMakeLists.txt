@@ -15,7 +15,11 @@ set_target_properties(glsl-editor
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake"
 )
+
+# check if OpenGl is avaliable
+find_package(OpenGL REQUIRED)
 
 add_subdirectory(3rdparty)
 add_subdirectory(src)

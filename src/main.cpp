@@ -1,10 +1,11 @@
+#include <glad/glad.h>
 #include <wx/wxprec.h>
 #include <wx/glcanvas.h>
 #ifndef WX_PRECOMP
     #include <wx/wx.h>
 #endif
 
-#include <glad/glad.h>
+#include <glm/glm.hpp>
 
 class MyApp: public wxApp
 {

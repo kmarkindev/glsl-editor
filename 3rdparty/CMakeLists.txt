@@ -13,3 +13,9 @@ target_link_libraries(glsl-editor wx::mono)
 add_subdirectory(glad)
 
 target_link_libraries(glsl-editor glad)
+
+# GLM
+
+add_subdirectory(glm)
+
+target_link_libraries(glsl-editor glm::glm)
