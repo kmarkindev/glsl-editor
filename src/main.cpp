@@ -1,80 +1,87 @@
-#include <glad/glad.h>
-#include <wx/wxprec.h>
-#include <wx/glcanvas.h>
-#ifndef WX_PRECOMP
-    #include <wx/wx.h>
-#endif
+#include <wx/wx.h>
 
-#include <glm/glm.hpp>
-
-class MyApp: public wxApp
+class LeftPanel : public wxPanel
 {
 public:
-    virtual bool OnInit();
-};
 
-class MyFrame: public wxFrame
-{
-public:
-    MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+	LeftPanel(wxWindow* parent, wxStaticText* label)
+		: wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(100, 300))
+	{
+		this->label = label;
+		plusButton = new wxButton(this, PLUS_BUTTON_ID, wxT("+"), wxPoint(10, 10), wxSize(50, 20));
+		minusButton = new wxButton(this, MINUS_BUTTON_ID, wxT("-"), wxPoint(10, 70), wxSize(50, 20));
+		counter = 0;
+		
+		Connect(PLUS_BUTTON_ID, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LeftPanel::OnPlusButtonClicked));
+		Connect(MINUS_BUTTON_ID, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(LeftPanel::OnMinusButtonClicked));
+		
+		UpdateLabel();
+	}
 
 private:
-    void OnHello(wxCommandEvent& event);
-    void OnExit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-    wxDECLARE_EVENT_TABLE();
+
+	wxButton* plusButton;
+	wxButton* minusButton;
+	int counter;
+
+	wxStaticText* label;
+
+	const int PLUS_BUTTON_ID = 101;
+	const int MINUS_BUTTON_ID = 102;
+
+	void UpdateLabel()
+	{
+		wxString str;
+
+		str.Printf(wxT("Counter: %d"), counter);
+
+		label->SetLabelText(str);
+	}
+
+	void OnPlusButtonClicked(wxCommandEvent& event)
+	{
+		counter++;
+		UpdateLabel();
+	}
+
+	void OnMinusButtonClicked(wxCommandEvent& event)
+	{
+		counter--;
+		UpdateLabel();
+	}
 };
 
-enum
+class MainFrame : public wxFrame
 {
-    ID_Hello = 1
+
+public:
+
+	MainFrame()
+		: wxFrame(nullptr, wxID_ANY, wxT("Main Frame"), wxDefaultPosition, wxSize(400, 400))
+	{
+		textField = new wxStaticText(this, wxID_ANY, wxT(""), wxPoint(250, 20), wxSize(100, 50));
+		leftPanel = new LeftPanel(this, textField);
+	}
+
+private:
+
+	LeftPanel* leftPanel;
+	wxStaticText* textField;
+
 };
 
-wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
-    EVT_MENU(ID_Hello,   MyFrame::OnHello)
-    EVT_MENU(wxID_EXIT,  MyFrame::OnExit)
-    EVT_MENU(wxID_ABOUT, MyFrame::OnAbout)
-wxEND_EVENT_TABLE()
-
-wxIMPLEMENT_APP(MyApp);
-
-bool MyApp::OnInit()
+class App : public wxApp
 {
-    MyFrame *frame = new MyFrame("Hello World", wxPoint(50, 50), wxSize(450, 340));
-    frame->Show(true);
-    return true;
-}
+public:
 
-MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
-        : wxFrame(NULL, wxID_ANY, title, pos, size)
-{
-    wxMenu *menuFile = new wxMenu;
-    menuFile->Append(ID_Hello, "&Hello...\tCtrl-H",
-                     "Help string shown in status bar for this menu item");
-    menuFile->AppendSeparator();
-    menuFile->Append(wxID_EXIT);
-    wxMenu *menuHelp = new wxMenu;
-    menuHelp->Append(wxID_ABOUT);
-    wxMenuBar *menuBar = new wxMenuBar;
-    menuBar->Append( menuFile, "&File" );
-    menuBar->Append( menuHelp, "&Help" );
-    SetMenuBar( menuBar );
-    CreateStatusBar();
-    SetStatusText( "Welcome to wxWidgets!" );
-}
+	bool OnInit()
+	{
+		MainFrame* frame = new MainFrame();
+		frame->Show();
 
-void MyFrame::OnExit(wxCommandEvent& event)
-{
-    Close( true );
-}
+		return true;
+	}
 
-void MyFrame::OnAbout(wxCommandEvent& event)
-{
-    wxMessageBox( "This is a wxWidgets' Hello world sample",
-                  "About Hello World", wxOK | wxICON_INFORMATION );
-}
+};
 
-void MyFrame::OnHello(wxCommandEvent& event)
-{
-    wxLogMessage("Hello world from wxWidgets!");
-}
+IMPLEMENT_APP(App);
