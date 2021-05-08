@@ -6,8 +6,6 @@ if(${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
     message(FATAL "Binary dir cannot be the same as source dir")
 endif()
 
-add_subdirectory(3rdparty)
-
 add_executable(glsl-editor)
 
 set_target_properties(glsl-editor
@@ -19,5 +17,6 @@ set_target_properties(glsl-editor
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
 )
 
+add_subdirectory(3rdparty)
 add_subdirectory(src)
 add_subdirectory(resources)
