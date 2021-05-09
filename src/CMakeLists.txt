@@ -4,4 +4,4 @@ App.cpp
 App.h
 )
 
-add_subdirectory(MainForm)
+add_subdirectory(MainFrame)

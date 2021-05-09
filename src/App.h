@@ -2,6 +2,8 @@
 
 #include <wx/wx.h>
 
+#include "MainFrame/MainFrame.h"
+
 class App : public wxApp
 {
 protected:

@@ -1,9 +1,8 @@
 #include "App.h"
-#include "MainForm/MainForm.h"
 
 bool App::OnInit()
 {
-	auto mainForm = new MainForm(nullptr);
+	auto mainForm = new MainFrame(nullptr);
 	mainForm->Centre();
 	mainForm->Show();
 
