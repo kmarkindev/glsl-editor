@@ -1,3 +1,7 @@
 target_sources(glsl-editor PRIVATE
-main.cpp
+Main.cpp
+App.cpp
+App.h
 )
+
+add_subdirectory(MainForm)

@@ -1,0 +1,9 @@
+#pragma once
+
+#include <wx/wx.h>
+
+class App : public wxApp
+{
+protected:
+	virtual bool OnInit();
+};
