@@ -7,3 +7,5 @@ App.h
 add_subdirectory(MainFrame)
 add_subdirectory(RenderPanel)
 add_subdirectory(Renderer)
+add_subdirectory(UniformsPanel)
+add_subdirectory(CodePanel)
