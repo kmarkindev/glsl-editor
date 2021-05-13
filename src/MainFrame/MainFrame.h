@@ -5,6 +5,7 @@
 #include "../Renderer/Shader.h"
 #include "../CodePanel/CodePanel.h"
 #include "../UniformsPanel/UniformsPanel.h"
+#include "../MainToolbar/MainToolbar.h"
 
 #include <wx/wx.h>
 #include <wx/splitter.h>
@@ -20,6 +21,7 @@ private:
 	CodePanel* _codePanel;
 	UniformsPanel* _uniformsPanel;
 	Shader* _shader;
+	MainToolbar* _toolbar;
 
 	void SetupPanels();
 };

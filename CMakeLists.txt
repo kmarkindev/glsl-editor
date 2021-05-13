@@ -27,4 +27,8 @@ find_package(OpenGL REQUIRED)
 
 add_subdirectory(3rdparty)
 add_subdirectory(src)
-add_subdirectory(resources)
+
+# copy resources to the build folder
+add_custom_command(TARGET glsl-editor PRE_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/resources/ $<TARGET_FILE_DIR:glsl-editor>/resources)

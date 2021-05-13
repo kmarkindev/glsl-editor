@@ -30,4 +30,7 @@ void MainFrame::SetupPanels()
 	rightPanelSplitter->SetSashGravity(0.0f);
 	rightPanelSplitter->SetMinimumPaneSize(100);
 	rightPanelSplitter->SplitHorizontally(_renderPanel, _uniformsPanel);
+
+	_toolbar = new MainToolbar(this);
+	SetToolBar(_toolbar);
 }
