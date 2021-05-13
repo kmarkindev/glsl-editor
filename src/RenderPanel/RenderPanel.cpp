@@ -20,8 +20,6 @@ RenderPanel::RenderPanel(wxWindow* parent, wxPoint position, wxSize size)
 
 	_glCanvas->SetCurrent(*_glContext);
 	_renderer = Renderer::GetInstance();
-
-	SetBackgroundColour(wxColor("white"));
 }
 
 void RenderPanel::Render()
