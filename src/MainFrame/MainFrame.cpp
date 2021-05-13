@@ -5,9 +5,11 @@ MainFrame::MainFrame(wxWindow* parent)
 {
 	SetupPanels();
 
-	auto src = "#version 330 core \n out vec4 FragColor; uniform vec3 test; void main() { FragColor = vec4(test.x, test.y, test.z, 1); }";
+	auto src = "#version 330 core \nout vec4 FragColor;\nuniform vec3 test;\nvoid main()\n{\n\tFragColor = vec4(test.x, test.y, test.z, 1);\n}";
 	_shader = new Shader(src);
 	_shader->Uniform3f("test", glm::vec3(0.2f, 0.3f, 0.3f));
+
+	_codePanel->SetSrc(src);
 }
 
 void MainFrame::SetupPanels()
