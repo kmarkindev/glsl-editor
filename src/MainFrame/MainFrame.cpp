@@ -5,9 +5,9 @@ MainFrame::MainFrame(wxWindow* parent)
 {
 	SetupPanels();
 
-	auto src = "#version 330 core \nout vec4 FragColor;\nuniform vec3 test;\nvoid main()\n{\n\tFragColor = vec4(test.x, test.y, test.z, 1);\n}";
+	auto src = "#version 330 core \nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4(0.3, 0.2, 0.2, 1);\n}";
 	_shader = new Shader(src);
-	_shader->Uniform3f("test", glm::vec3(0.2f, 0.3f, 0.3f));
+	_renderPanel->SetShader(_shader);
 
 	_codePanel->SetSrc(src);
 }
@@ -31,6 +31,6 @@ void MainFrame::SetupPanels()
 	rightPanelSplitter->SetMinimumPaneSize(100);
 	rightPanelSplitter->SplitHorizontally(_renderPanel, _uniformsPanel);
 
-	_toolbar = new MainToolbar(this);
+	_toolbar = new MainToolbar(this, _renderPanel);
 	SetToolBar(_toolbar);
 }
