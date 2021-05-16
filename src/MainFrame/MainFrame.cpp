@@ -6,10 +6,43 @@ MainFrame::MainFrame(wxWindow* parent)
 	SetupPanels();
 
 	auto src = "#version 330 core \nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4(0.3, 0.2, 0.2, 1);\n}";
-	_shader = new Shader(src);
-	_renderPanel->SetShader(_shader);
-
 	_codePanel->SetSrc(src);
+
+	_shader = new Shader(src);
+}
+
+void MainFrame::LoadSrc(std::string newSrc)
+{
+	_shader->SetSrc(newSrc);
+}
+
+std::string MainFrame::GetSrc()
+{
+	return _codePanel->GetSrc();
+}
+
+void MainFrame::SetSrc(std::string newSrc)
+{
+	_codePanel->SetSrc(newSrc);
+}
+
+void MainFrame::IncreaseFontSize()
+{
+	int size = _codePanel->GetFontSize() + 2;
+	if (size < 50)
+		_codePanel->SetFontSize(size);
+}
+
+void MainFrame::DecreaseFontSize()
+{
+	int size = _codePanel->GetFontSize() - 2;
+	if(size > 0)
+		_codePanel->SetFontSize(size);
+}
+
+void MainFrame::RenderShader()
+{
+	_renderPanel->Render(_shader);
 }
 
 void MainFrame::SetupPanels()
@@ -31,6 +64,6 @@ void MainFrame::SetupPanels()
 	rightPanelSplitter->SetMinimumPaneSize(100);
 	rightPanelSplitter->SplitHorizontally(_renderPanel, _uniformsPanel);
 
-	_toolbar = new MainToolbar(this, _renderPanel);
+	_toolbar = new MainToolbar(this, this);
 	SetToolBar(_toolbar);
 }

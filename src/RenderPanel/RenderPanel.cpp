@@ -3,8 +3,6 @@
 RenderPanel::RenderPanel(wxWindow* parent, wxPoint position, wxSize size)
 	: wxPanel(parent, wxID_ANY, position, size)
 {
-	_shader = nullptr;
-
 	wxGLAttributes attribs;
 	attribs.Defaults().EndList();
 
@@ -22,25 +20,14 @@ RenderPanel::RenderPanel(wxWindow* parent, wxPoint position, wxSize size)
 	_renderer = Renderer::GetInstance();
 }
 
-void RenderPanel::Render()
+void RenderPanel::Render(Shader* shader)
 {
-	if (!_shader)
-		return;
+	assert(shader != nullptr);
 
 	auto rect = _glCanvas->GetRect();
 
 	_glCanvas->SetCurrent(*_glContext);
 	_renderer->SetViewport(0, 0, rect.width, rect.height);
-	_renderer->Render(_shader);
+	_renderer->Render(shader);
 	_glCanvas->SwapBuffers();
-}
-
-void RenderPanel::SetShader(Shader* shader)
-{
-	_shader = shader;
-}
-
-const Shader* RenderPanel::GetShader()
-{
-	return _shader;
 }

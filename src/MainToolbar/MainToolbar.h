@@ -1,17 +1,19 @@
 #pragma once
 
-#include "../RenderPanel/RenderPanel.h"
+#include "../MainFrame/MainFrame.h"
 
 #include <wx/wx.h>
+
+class MainFrame;
 
 class MainToolbar : public wxToolBar
 {
 public:
-	MainToolbar(wxWindow* parent, RenderPanel* renderPanel);
+	MainToolbar(wxWindow* parent, MainFrame* mainFrame);
 	~MainToolbar();
 
 private:
-	RenderPanel* _randerPanel;
+	MainFrame* _mainFrame;
 	wxTimer* _renderTimer;
 
 	wxBitmap* LoadToolbarBitmap(wxString path);
@@ -30,6 +32,8 @@ private:
 	void StartRenderButtonHandler(wxCommandEvent& event);
 	void StopRenderButtonHandler(wxCommandEvent& event);
 	void RenderTimerHandler(wxCommandEvent& event);
+	void IncreaseButtonHandler(wxCommandEvent& event);
+	void DecreaseButtonHandler(wxCommandEvent& event);
 
 	enum class Ids : int
 	{

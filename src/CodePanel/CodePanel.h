@@ -13,6 +13,9 @@ public:
 	std::string GetSrc();
 	void SetSrc(const std::string& newSrc);
 
+	int GetFontSize();
+	void SetFontSize(int newSize);
+
 private:
 	wxTextCtrl* _textCtrl;
 

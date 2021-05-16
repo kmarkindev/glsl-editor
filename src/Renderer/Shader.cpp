@@ -2,6 +2,7 @@
 
 Shader::Shader(std::string src)
 {
+	Renderer::GetInstance();
 	SetSrc(src);
 }
 

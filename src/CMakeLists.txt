@@ -2,6 +2,7 @@ target_sources(glsl-editor PRIVATE
 Main.cpp
 App.cpp
 App.h
+common.h
 )
 
 add_subdirectory(MainFrame)

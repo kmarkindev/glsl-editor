@@ -1,9 +1,9 @@
 #include "MainToolbar.h"
 
-MainToolbar::MainToolbar(wxWindow* parent, RenderPanel* renderPanel)
+MainToolbar::MainToolbar(wxWindow* parent, MainFrame* mainFrame)
 	: wxToolBar(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORZ_TEXT)
 {
-	_randerPanel = renderPanel;
+	_mainFrame = mainFrame;
 	_renderTimer = new wxTimer(this, (int)Ids::RenderTimer);
 
 	LoadBitmaps();
@@ -70,6 +70,10 @@ void MainToolbar::BindEvents()
 		wxCommandEventHandler(MainToolbar::StopRenderButtonHandler));
 	Connect((int)Ids::RenderTimer, wxEVT_TIMER,
 		wxCommandEventHandler(MainToolbar::RenderTimerHandler));
+	Connect((int)Ids::AddFontSize, wxEVT_COMMAND_TOOL_CLICKED,
+		wxCommandEventHandler(MainToolbar::IncreaseButtonHandler));
+	Connect((int)Ids::SubFontSize, wxEVT_COMMAND_TOOL_CLICKED,
+		wxCommandEventHandler(MainToolbar::DecreaseButtonHandler));
 }
 
 void MainToolbar::RenderButtonHandler(wxCommandEvent& event)
@@ -97,5 +101,15 @@ void MainToolbar::StopRenderButtonHandler(wxCommandEvent& event)
 
 void MainToolbar::RenderTimerHandler(wxCommandEvent& event)
 {
-	_randerPanel->Render();
+	_mainFrame->RenderShader();
+}
+
+void MainToolbar::IncreaseButtonHandler(wxCommandEvent& event)
+{
+	_mainFrame->IncreaseFontSize();
+}
+
+void MainToolbar::DecreaseButtonHandler(wxCommandEvent& event)
+{
+	_mainFrame->DecreaseFontSize();
 }

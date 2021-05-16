@@ -12,14 +12,10 @@ public:
 	RenderPanel(wxWindow* parent, wxPoint position = wxDefaultPosition,
 		wxSize size = wxDefaultSize);
 
-	void Render();
-
-	void SetShader(Shader* shader);
-	const Shader* GetShader();
+	void Render(Shader* shader);
 
 private:
 	wxGLCanvas* _glCanvas;
 	wxGLContext* _glContext;
 	Renderer* _renderer;
-	Shader* _shader;
 };

@@ -5,6 +5,8 @@
 #include <glad/glad.h>
 #include <exception>
 
+class Shader;
+
 class Renderer
 {
 public:

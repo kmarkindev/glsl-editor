@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Renderer.h"
+
 #include <glad/glad.h>
 #include <string>
 #include <glm/glm.hpp>
