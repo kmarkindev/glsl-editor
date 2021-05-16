@@ -85,6 +85,8 @@ void MainToolbar::BindEvents()
 		wxCommandEventHandler(MainToolbar::IncreaseButtonHandler));
 	Connect((int)Ids::SubFontSize, wxEVT_COMMAND_TOOL_CLICKED,
 		wxCommandEventHandler(MainToolbar::DecreaseButtonHandler));
+	Connect((int)Ids::LoadSrc, wxEVT_COMMAND_TOOL_CLICKED,
+		wxCommandEventHandler(MainToolbar::LoadSrcButtonHandler));
 }
 
 void MainToolbar::RenderButtonHandler(wxCommandEvent& event)
@@ -123,4 +125,9 @@ void MainToolbar::IncreaseButtonHandler(wxCommandEvent& event)
 void MainToolbar::DecreaseButtonHandler(wxCommandEvent& event)
 {
 	_mainFrame->DecreaseFontSize();
+}
+
+void MainToolbar::LoadSrcButtonHandler(wxCommandEvent& event)
+{
+	_mainFrame->LoadSrc(_mainFrame->GetSrc());
 }

@@ -35,6 +35,7 @@ private:
 	void RenderTimerHandler(wxCommandEvent& event);
 	void IncreaseButtonHandler(wxCommandEvent& event);
 	void DecreaseButtonHandler(wxCommandEvent& event);
+	void LoadSrcButtonHandler(wxCommandEvent& event);
 
 	enum class Ids : int
 	{
