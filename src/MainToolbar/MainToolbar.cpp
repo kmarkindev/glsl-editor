@@ -13,6 +13,8 @@ MainToolbar::MainToolbar(wxWindow* parent, RenderPanel* renderPanel)
 
 MainToolbar::~MainToolbar()
 {
+	_renderTimer->Stop();
+
 	delete renderBitmap;
 	delete startRenderBitmap;
 	delete stopRenderBitmap;
