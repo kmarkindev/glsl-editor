@@ -5,6 +5,7 @@ MainToolbar::MainToolbar(wxWindow* parent, MainFrame* mainFrame)
 {
 	_mainFrame = mainFrame;
 	_renderTimer = new wxTimer(this, (int)Ids::RenderTimer);
+	_loadSrcTimer = new wxTimer(this, (int)Ids::LoadSrcTimer);
 
 	LoadBitmaps();
 	SetupButtons();
@@ -14,6 +15,7 @@ MainToolbar::MainToolbar(wxWindow* parent, MainFrame* mainFrame)
 MainToolbar::~MainToolbar()
 {
 	_renderTimer->Stop();
+	_loadSrcTimer->Stop();
 
 	delete renderBitmap;
 	delete startRenderBitmap;
@@ -67,6 +69,7 @@ void MainToolbar::SetupButtons()
 		wxT("Stop"), *stopRenderBitmap, wxT("Pauses load sources loop"));
 
 	EnableTool((int)Ids::StopRenderLoop, false);
+	EnableTool((int)Ids::StopLoadSrcLoop, false);
 
 	Realize();
 }
@@ -87,6 +90,12 @@ void MainToolbar::BindEvents()
 		wxCommandEventHandler(MainToolbar::DecreaseButtonHandler));
 	Connect((int)Ids::LoadSrc, wxEVT_COMMAND_TOOL_CLICKED,
 		wxCommandEventHandler(MainToolbar::LoadSrcButtonHandler));
+	Connect((int)Ids::StartLoadSrcLoop, wxEVT_COMMAND_TOOL_CLICKED,
+		wxCommandEventHandler(MainToolbar::StartLoadSrcLoopButtonHandler));
+	Connect((int)Ids::StopLoadSrcLoop, wxEVT_COMMAND_TOOL_CLICKED,
+		wxCommandEventHandler(MainToolbar::StopLoadSrcLoopButtonHandler));
+	Connect((int)Ids::LoadSrcTimer, wxEVT_TIMER,
+		wxCommandEventHandler(MainToolbar::LoadSrcTimerHandler));
 }
 
 void MainToolbar::RenderButtonHandler(wxCommandEvent& event)
@@ -128,6 +137,29 @@ void MainToolbar::DecreaseButtonHandler(wxCommandEvent& event)
 }
 
 void MainToolbar::LoadSrcButtonHandler(wxCommandEvent& event)
+{
+	_loadSrcTimer->StartOnce();
+}
+
+void MainToolbar::StartLoadSrcLoopButtonHandler(wxCommandEvent& event)
+{
+	EnableTool((int)Ids::LoadSrc, false);
+	EnableTool((int)Ids::StartLoadSrcLoop, false);
+	EnableTool((int)Ids::StopLoadSrcLoop, true);
+
+	_loadSrcTimer->Start(2);
+}
+
+void MainToolbar::StopLoadSrcLoopButtonHandler(wxCommandEvent& event)
+{
+	EnableTool((int)Ids::LoadSrc, true);
+	EnableTool((int)Ids::StartLoadSrcLoop, true);
+	EnableTool((int)Ids::StopLoadSrcLoop, false);
+
+	_loadSrcTimer->Stop();
+}
+
+void MainToolbar::LoadSrcTimerHandler(wxCommandEvent& event)
 {
 	_mainFrame->LoadSrc(_mainFrame->GetSrc());
 }

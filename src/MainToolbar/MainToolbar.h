@@ -15,6 +15,7 @@ public:
 private:
 	MainFrame* _mainFrame;
 	wxTimer* _renderTimer;
+	wxTimer* _loadSrcTimer;
 
 	wxBitmap* LoadToolbarBitmap(wxString path);
 
@@ -36,6 +37,9 @@ private:
 	void IncreaseButtonHandler(wxCommandEvent& event);
 	void DecreaseButtonHandler(wxCommandEvent& event);
 	void LoadSrcButtonHandler(wxCommandEvent& event);
+	void StartLoadSrcLoopButtonHandler(wxCommandEvent& event);
+	void StopLoadSrcLoopButtonHandler(wxCommandEvent& event);
+	void LoadSrcTimerHandler(wxCommandEvent& event);
 
 	enum class Ids : int
 	{
@@ -47,6 +51,7 @@ private:
 		RenderTimer,
 		LoadSrc,
 		StartLoadSrcLoop,
-		StopLoadSrcLoop
+		StopLoadSrcLoop,
+		LoadSrcTimer
 	};
 };
