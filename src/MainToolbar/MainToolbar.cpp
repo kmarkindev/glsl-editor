@@ -20,6 +20,7 @@ MainToolbar::~MainToolbar()
 	delete stopRenderBitmap;
 	delete plusFontSizeBitmap;
 	delete minusFontSizeBitmap;
+	delete loadShaderBitmap;
 }
 
 wxBitmap* MainToolbar::LoadToolbarBitmap(wxString path)
@@ -37,6 +38,7 @@ void MainToolbar::LoadBitmaps()
 	stopRenderBitmap = LoadToolbarBitmap(wxT("resources/toolbar_render_pause.png"));
 	plusFontSizeBitmap = LoadToolbarBitmap(wxT("resources/toolbar_font_plus.png"));
 	minusFontSizeBitmap = LoadToolbarBitmap(wxT("resources/toolbar_font_minus.png"));
+	loadShaderBitmap = LoadToolbarBitmap(wxT("resources/toolbar_load.png"));
 }
 
 void MainToolbar::SetupButtons()
@@ -54,6 +56,15 @@ void MainToolbar::SetupButtons()
 		*plusFontSizeBitmap, wxT("Increases font size of shader code"));
 	AddTool((int)Ids::SubFontSize, wxT("Font size"),
 		*minusFontSizeBitmap, wxT("Decreases font size of shader code"));
+
+	AddSeparator();
+
+	AddTool((int)Ids::LoadSrc, wxT("Load"), *loadShaderBitmap,
+		wxT("Loads new source code to shader"));
+	AddTool((int)Ids::StartLoadSrcLoop,
+		wxT("Start"), *startRenderBitmap, wxT("Starts load sources loop"));
+	AddTool((int)Ids::StopLoadSrcLoop,
+		wxT("Stop"), *stopRenderBitmap, wxT("Pauses load sources loop"));
 
 	EnableTool((int)Ids::StopRenderLoop, false);
 

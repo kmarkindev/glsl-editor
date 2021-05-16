@@ -23,6 +23,7 @@ private:
 	wxBitmap* stopRenderBitmap;
 	wxBitmap* plusFontSizeBitmap;
 	wxBitmap* minusFontSizeBitmap;
+	wxBitmap* loadShaderBitmap;
 
 	void LoadBitmaps();
 	void SetupButtons();
@@ -42,6 +43,9 @@ private:
 		StopRenderLoop,
 		AddFontSize,
 		SubFontSize,
-		RenderTimer
+		RenderTimer,
+		LoadSrc,
+		StartLoadSrcLoop,
+		StopLoadSrcLoop
 	};
 };
