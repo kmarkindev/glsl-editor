@@ -90,6 +90,11 @@ void Shader::Uniform4x4f(std::string location, glm::mat4 value)
 	glUniformMatrix4fv(loc, 1, GL_FALSE, &value[0][0]);
 }
 
+void Shader::ClearUniforms()
+{
+	glLinkProgram(_shaderProgram);
+}
+
 void Shader::LoadShaderSrc(GLuint id, const std::string& src)
 {
 	const char* shader = src.c_str();

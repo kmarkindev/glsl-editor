@@ -22,6 +22,7 @@ public:
 	void Uniform4f(std::string location, glm::vec4 value);
 	void Uniform3x3f(std::string location, glm::mat3 value);
 	void Uniform4x4f(std::string location, glm::mat4 value);
+	void ClearUniforms();
 
 protected:
 	GLuint _vertexShader = 0;
