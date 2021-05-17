@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/textctrl.h>
+#include <wx/stc/stc.h>
 #include <string>
 
 class CodePanel : public wxPanel
@@ -17,7 +17,7 @@ public:
 	void SetFontSize(int newSize);
 
 private:
-	wxTextCtrl* _textCtrl;
+	wxStyledTextCtrl* _textCtrl;
 
 	void SetupTextCtrl();
 };

@@ -29,7 +29,7 @@ void MainFrame::SetSrc(std::string newSrc)
 void MainFrame::IncreaseFontSize()
 {
 	int size = _codePanel->GetFontSize() + 2;
-	if (size < 50)
+	if (size < 35)
 		_codePanel->SetFontSize(size);
 }
 

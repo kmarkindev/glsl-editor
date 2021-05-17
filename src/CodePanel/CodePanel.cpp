@@ -22,20 +22,17 @@ void CodePanel::SetSrc(const std::string& newSrc)
 
 int CodePanel::GetFontSize()
 {
-	return _textCtrl->GetFont().GetPointSize();
+	return _textCtrl->GetZoom();
 }
 
 void CodePanel::SetFontSize(int newSize)
 {
-	auto font = _textCtrl->GetFont();
-	font.SetPointSize(newSize);
-	_textCtrl->SetFont(font);
+	_textCtrl->SetZoom(newSize);
 }
 
 void CodePanel::SetupTextCtrl()
 {
-	_textCtrl = new wxTextCtrl(this, wxID_ANY, wxT(""), 
-		wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_PROCESS_TAB | wxHSCROLL);
-
-	SetFontSize(20);
+	_textCtrl = new wxStyledTextCtrl(this, wxID_ANY);
+	_textCtrl->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+	_textCtrl->SetMarginWidth(1, 25);
 }

@@ -6,7 +6,7 @@ set(wxBUILD_TESTS OFF)
 
 add_subdirectory(wxWidgets)
 
-target_link_libraries(glsl-editor wx::core wx::base wx::gl)
+target_link_libraries(glsl-editor wx::core wx::base wx::gl wx::stc)
 
 # GLAD
 
