@@ -35,4 +35,5 @@ void CodePanel::SetupTextCtrl()
 	_textCtrl = new wxStyledTextCtrl(this, wxID_ANY);
 	_textCtrl->SetMarginType(1, wxSTC_MARGIN_NUMBER);
 	_textCtrl->SetMarginWidth(1, 25);
+	_textCtrl->SetMarginSensitive(1, false);
 }
