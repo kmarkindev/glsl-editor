@@ -10,6 +10,7 @@
 #include <string>
 
 class MainToolbar;
+class RenderPanel;
 
 class MainFrame : public wxFrame
 {
@@ -23,6 +24,7 @@ public:
 	void IncreaseFontSize();
 	void DecreaseFontSize();
 	void RenderShader();
+	void SetupUniforms();
 
 private:
 	RenderPanel* _renderPanel;

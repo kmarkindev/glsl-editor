@@ -45,6 +45,13 @@ void MainFrame::RenderShader()
 	_renderPanel->Render(_shader);
 }
 
+void MainFrame::SetupUniforms()
+{
+	//clear shader uniforms
+	//get uniforms from _uniformsPanel
+	//apply them to Shader
+}
+
 void MainFrame::SetupPanels()
 {
 	auto mainSplitter = new wxSplitterWindow(this, wxID_ANY,
@@ -53,7 +60,7 @@ void MainFrame::SetupPanels()
 
 	auto rightPanelSplitter = new wxSplitterWindow(mainSplitter, wxID_ANY,
 		wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE | wxSP_BORDER);
-	_renderPanel = new RenderPanel(rightPanelSplitter);
+	_renderPanel = new RenderPanel(rightPanelSplitter, this);
 	_uniformsPanel = new UniformsPanel(rightPanelSplitter);
 
 	mainSplitter->SetMinimumPaneSize(200);

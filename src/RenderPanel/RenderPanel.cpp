@@ -1,7 +1,9 @@
 #include "RenderPanel.h"
 
-RenderPanel::RenderPanel(wxWindow* parent, wxPoint position, wxSize size)
-	: wxPanel(parent, wxID_ANY, position, size)
+RenderPanel::RenderPanel(wxWindow* parent, MainFrame* mainFrame,
+	wxPoint position, wxSize size)
+	: wxPanel(parent, wxID_ANY, position, size),
+	_mainFrame(mainFrame)
 {
 	wxGLAttributes attribs;
 	attribs.Defaults().EndList();
@@ -23,6 +25,8 @@ RenderPanel::RenderPanel(wxWindow* parent, wxPoint position, wxSize size)
 void RenderPanel::Render(Shader* shader)
 {
 	assert(shader != nullptr);
+
+	_mainFrame->SetupUniforms();
 
 	auto rect = _glCanvas->GetRect();
 

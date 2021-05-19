@@ -12,9 +12,15 @@ else()
     add_executable(glsl-editor)
 endif()
 
+if(WIN32)
+    message("Including windows application manifest to glsl-editor.exe")
+    set_source_files_properties(resource.rc PROPERTIES LANGUAGE RC)
+    target_sources(glsl-editor PRIVATE resource.rc)
+endif()
+
 set_target_properties(glsl-editor
     PROPERTIES
-    CXX_STANDARD_REQUIRED 20
+    CXX_STANDARD_REQUIRED ON
     CXX_STANDARD 20
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
@@ -22,7 +28,7 @@ set_target_properties(glsl-editor
     CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake"
 )
 
-# check if OpenGl is avaliable
+# check if OpenGl is available
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(3rdparty)
@@ -31,4 +37,5 @@ add_subdirectory(src)
 # copy resources to the build folder
 add_custom_command(TARGET glsl-editor PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/resources/ $<TARGET_FILE_DIR:glsl-editor>/resources)
+    ${CMAKE_SOURCE_DIR}/resources/ $<TARGET_FILE_DIR:glsl-editor>/resources
+)
