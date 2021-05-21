@@ -48,42 +48,42 @@ void Shader::UniformBool(std::string location, bool value)
 	glUniform1i(loc, value);
 }
 
-void Shader::Uniform1f(std::string location, float value)
+void Shader::Uniform(std::string location, float value)
 {
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);
 	glUniform1f(loc, value);
 }
 
-void Shader::Uniform2f(std::string location, glm::vec2 value)
+void Shader::Uniform(std::string location, glm::vec2 value)
 {
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);
 	glUniform2fv(loc, 1, &value[0]);
 }
 
-void Shader::Uniform3f(std::string location, glm::vec3 value)
+void Shader::Uniform(std::string location, glm::vec3 value)
 {
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);
 	glUniform3fv(loc, 1, &value[0]);
 }
 
-void Shader::Uniform4f(std::string location, glm::vec4 value)
+void Shader::Uniform(std::string location, glm::vec4 value)
 {
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);
 	glUniform4fv(loc, 1, &value[0]);
 }
 
-void Shader::Uniform3x3f(std::string location, glm::mat3 value)
+void Shader::Uniform(std::string location, glm::mat3 value)
 {
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);
 	glUniformMatrix3fv(loc, 1, GL_FALSE, &value[0][0]);
 }
 
-void Shader::Uniform4x4f(std::string location, glm::mat4 value)
+void Shader::Uniform(std::string location, glm::mat4 value)
 {
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);

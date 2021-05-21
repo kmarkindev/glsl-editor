@@ -16,12 +16,12 @@ public:
 	void UseProgram();
 
 	void UniformBool(std::string location, bool value);
-	void Uniform1f(std::string location, float value);
-	void Uniform2f(std::string location, glm::vec2 value);
-	void Uniform3f(std::string location, glm::vec3 value);
-	void Uniform4f(std::string location, glm::vec4 value);
-	void Uniform3x3f(std::string location, glm::mat3 value);
-	void Uniform4x4f(std::string location, glm::mat4 value);
+	void Uniform(std::string location, float value);
+	void Uniform(std::string location, glm::vec2 value);
+	void Uniform(std::string location, glm::vec3 value);
+	void Uniform(std::string location, glm::vec4 value);
+	void Uniform(std::string location, glm::mat3 value);
+	void Uniform(std::string location, glm::mat4 value);
 	void ClearUniforms();
 
 protected:
