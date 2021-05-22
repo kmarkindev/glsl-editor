@@ -6,3 +6,8 @@ UniformsPanel::UniformsPanel(wxWindow* parent, wxPoint position, wxSize size)
 {
 
 }
+
+std::vector<IUniformDTO> UniformsPanel::GetUniforms()
+{
+    return std::vector<IUniformDTO>();
+}
