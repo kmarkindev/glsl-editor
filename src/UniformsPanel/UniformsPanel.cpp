@@ -5,6 +5,16 @@ UniformsPanel::UniformsPanel(wxWindow* parent, wxPoint position, wxSize size)
 	_lines(std::vector<UniformLine>())
 {
 
+    new UniformLine(this);
+    new UniformLine(this);
+    new UniformLine(this);
+    new UniformLine(this);
+    new UniformLine(this);
+    new UniformLine(this);
+    new UniformLine(this);
+    new UniformLine(this);
+    new UniformLine(this);
+
 }
 
 std::vector<IUniformDTO> UniformsPanel::GetUniforms()

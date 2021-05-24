@@ -8,6 +8,8 @@ IUniformDTO* UniformLine::GetUniformDTO()
 UniformLine::UniformLine(wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
 {
+    SetSize(wxSize(100, 50));
+
     _nameCtrl = new wxTextCtrl(this, wxID_ANY);
     _typeCtrl = new wxComboBox(this, wxID_ANY);
 

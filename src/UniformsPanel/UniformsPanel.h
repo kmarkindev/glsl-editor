@@ -14,6 +14,7 @@ public:
 		wxPoint position = wxDefaultPosition, wxSize size = wxDefaultSize);
 	std::vector<IUniformDTO> GetUniforms();
 	void AddUniform();
+
 private:
     std::vector<UniformLine> _lines;
 };
