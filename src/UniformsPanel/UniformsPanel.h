@@ -7,13 +7,13 @@
 #include <string>
 #include <vector>
 
-class UniformsPanel : public wxPanel
+class UniformsPanel : public wxScrolled<wxPanel>
 {
 public:
 	UniformsPanel(wxWindow* parent,
 		wxPoint position = wxDefaultPosition, wxSize size = wxDefaultSize);
 	std::vector<IUniformDTO> GetUniforms();
-	void AddUniform();
+	UniformLine* AddUniform();
 
 private:
     std::vector<UniformLine> _lines;

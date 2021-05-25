@@ -61,9 +61,8 @@ void MainFrame::SetupPanels()
 	auto rightPanelSplitter = new wxSplitterWindow(mainSplitter, wxID_ANY,
 		wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE | wxSP_BORDER);
 	_renderPanel = new RenderPanel(rightPanelSplitter, this);
+    _uniformsPanel = new UniformsPanel(rightPanelSplitter);
 
-	auto scrollWindow = new wxScrolledWindow(rightPanelSplitter, wxID_ANY);
-	_uniformsPanel = new UniformsPanel(scrollWindow);
 
 	mainSplitter->SetMinimumPaneSize(200);
 	mainSplitter->SetSashGravity(1.0f);
@@ -71,7 +70,7 @@ void MainFrame::SetupPanels()
 
 	rightPanelSplitter->SetSashGravity(0.0f);
 	rightPanelSplitter->SetMinimumPaneSize(100);
-	rightPanelSplitter->SplitHorizontally(_renderPanel, scrollWindow);
+	rightPanelSplitter->SplitHorizontally(_renderPanel, _uniformsPanel);
 
 	_toolbar = new MainToolbar(this, this);
 	SetToolBar(_toolbar);
