@@ -63,7 +63,6 @@ void MainFrame::SetupPanels()
 	_renderPanel = new RenderPanel(rightPanelSplitter, this);
     _uniformsPanel = new UniformsPanel(rightPanelSplitter);
 
-
 	mainSplitter->SetMinimumPaneSize(200);
 	mainSplitter->SetSashGravity(1.0f);
 	mainSplitter->SplitVertically(_codePanel, rightPanelSplitter);

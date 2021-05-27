@@ -19,27 +19,28 @@ UniformLine::UniformLine(wxWindow *parent)
     typeList->Add(wxT("Float4"));
 
     _nameCtrl = new wxTextCtrl(this, wxID_ANY);
-    _typeCtrl = new wxComboBox(this, wxID_ANY,
-        wxT("Bool"), wxDefaultPosition, wxDefaultSize,*typeList,wxCB_READONLY);
+    _typeCtrl = new wxComboBox(this, (int)Ids::ComboBox,
+        wxT("Bool"), wxDefaultPosition, wxDefaultSize, *typeList, wxCB_READONLY);
+    Connect((int)Ids::ComboBox, wxEVT_COMBOBOX, wxCommandEventHandler(UniformLine::OnTypeSelectedHandler));
 
     CreateInputControls();
     ShowBool();
 
-    auto sizer = new wxBoxSizer(wxHORIZONTAL);
-    sizer->Add(_nameCtrl, 1, wxEXPAND);
-    sizer->Add(_typeCtrl, 0, wxEXPAND);
-    sizer->Add(_boolPanel, 1, wxEXPAND);
-    sizer->Add(_floatPanel, 1, wxEXPAND);
-    sizer->Add(_float2Panel, 1, wxEXPAND);
-    sizer->Add(_float3Panel, 1, wxEXPAND);
-    sizer->Add(_float4Panel, 1, wxEXPAND);
+    _sizer = new wxBoxSizer(wxHORIZONTAL);
+    _sizer->Add(_nameCtrl, 1, wxEXPAND);
+    _sizer->Add(_typeCtrl, 0, wxEXPAND);
+    _sizer->Add(_boolPanel, 1, wxEXPAND);
+    _sizer->Add(_floatPanel, 1, wxEXPAND);
+    _sizer->Add(_float2Panel, 1, wxEXPAND);
+    _sizer->Add(_float3Panel, 1, wxEXPAND);
+    _sizer->Add(_float4Panel, 1, wxEXPAND);
 
-    SetSizer(sizer);
+    SetSizer(_sizer);
 }
 
 void UniformLine::CreateInputControls()
 {
-    // qui spem ponitur (give up hope everyone who enters here)
+    // qui spem ponitur (give up hope everDyone who enters here)
 
     // TODO: fix control sizes. Now it's too large
 
@@ -111,4 +112,24 @@ void UniformLine::HideActivePanel()
     _float2Panel->Show(false);
     _float3Panel->Show(false);
     _float4Panel->Show(false);
+}
+
+void UniformLine::OnTypeSelectedHandler(wxCommandEvent& event)
+{
+    auto value = _typeCtrl->GetValue();
+
+    if(value == wxT("Bool"))
+        ShowBool();
+    else if(value == wxT("Float"))
+        ShowFloat();
+    else if(value == wxT("Float2"))
+        ShowFloat2();
+    else if(value == wxT("Float3"))
+        ShowFloat3();
+    else if(value == wxT("Float4"))
+        ShowFloat4();
+    else
+        assert(false);
+
+    _sizer->Layout();
 }

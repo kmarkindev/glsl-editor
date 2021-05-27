@@ -17,6 +17,7 @@ public:
 private:
     wxTextCtrl* _nameCtrl;
     wxComboBox* _typeCtrl;
+    wxBoxSizer* _sizer;
 
     //TODO: move to separate classes
 
@@ -49,5 +50,11 @@ private:
     void ShowFloat3();
     void ShowFloat4();
     void HideActivePanel();
+
+    void OnTypeSelectedHandler(wxCommandEvent& event);
+
+    enum class Ids {
+        ComboBox = wxID_LAST + 1
+    };
 
 };
