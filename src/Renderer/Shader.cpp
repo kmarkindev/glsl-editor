@@ -41,7 +41,7 @@ void Shader::UseProgram()
 	glUseProgram(_shaderProgram);
 }
 
-void Shader::UniformBool(std::string location, bool value)
+void Shader::Uniform(std::string location, bool value)
 {
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);
@@ -53,6 +53,11 @@ void Shader::Uniform(std::string location, float value)
 	UseProgram();
 	GLuint loc = GetUniformLocation(location);
 	glUniform1f(loc, value);
+}
+
+void Shader::Uniform(std::string location, int value)
+{
+	Uniform(location, (float)value);
 }
 
 void Shader::Uniform(std::string location, glm::vec2 value)

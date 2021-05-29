@@ -18,6 +18,8 @@ public:
 
 	void Render(Shader* shader);
 
+	std::tuple<int, int> GetCanvasSize();
+
 private:
 	wxGLCanvas* _glCanvas;
 	wxGLContext* _glContext;

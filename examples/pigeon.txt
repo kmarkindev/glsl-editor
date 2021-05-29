@@ -1,0 +1,370 @@
+uniform float _time;
+uniform vec2 _canvasRect;
+
+// shadertoy emulation
+#define iTime (_time / 1000)
+#define iResolution _canvasRect
+const vec4 iMouse = vec4(0.);
+
+#define USE_MOUSE 0
+#define MAX_STEPS 100
+#define MAX_DIST 80.
+#define SURF_DIST .001
+#define EDGE_WIDTH 0.02
+#define Rot(a) mat2(cos(a),-sin(a),sin(a),cos(a))
+#define matRotateX(rad) mat3(1,0,0,0,cos(rad),-sin(rad),0,sin(rad),cos(rad))
+#define matRotateY(rad) mat3(cos(rad),0,-sin(rad),0,1,0,sin(rad),0,cos(rad))
+#define matRotateZ(rad) mat3(cos(rad),-sin(rad),0,sin(rad),cos(rad),0,0,0,1)
+#define hash(h) fract(sin(h) * 43758.5453123)
+#define PI 3.141592653589793
+
+// noise and fbm function from https://gist.github.com/patriciogonzalezvivo/670c22f3966e662d2f83
+//-----------------------------------------------------------------------------
+mat3 m = mat3( 0.00,  0.80,  0.60,
+              -0.80,  0.36, -0.48,
+              -0.60, -0.48,  0.64 );
+
+float noise( in vec3 x )
+{
+    vec3 p = floor(x);
+    vec3 f = fract(x);
+
+    f = f*f*(3.0-2.0*f);
+
+    float n = p.x + p.y*57.0 + 113.0*p.z;
+
+    float res = mix(mix(mix( hash(n+  0.0), hash(n+  1.0),f.x),
+                        mix( hash(n+ 57.0), hash(n+ 58.0),f.x),f.y),
+                    mix(mix( hash(n+113.0), hash(n+114.0),f.x),
+                        mix( hash(n+170.0), hash(n+171.0),f.x),f.y),f.z);
+    return res;
+}
+
+float fbm( vec3 p )
+{
+    float f;
+    f  = 0.5000*noise( p ); p = m*p*2.02;
+    f += 0.2500*noise( p ); p = m*p*2.03;
+    f += 0.1250*noise( p );
+    return f;
+}
+
+float edge;
+
+// by Dave_Hoskins
+float hash12(vec2 p)
+{
+	vec3 p3  = fract(vec3(p.xyx) * .1031);
+    p3 += dot(p3, p3.yzx + 33.33);
+    return fract((p3.x + p3.y) * p3.z);
+}
+
+float dot2( in vec3 v ) { return dot(v,v); }
+
+float smin( float a, float b, float k ) {
+    float h = clamp( 0.5+0.5*(b-a)/k, 0., 1. );
+    return mix( b, a, h ) - k*h*(1.0-h);
+}
+
+vec4 combine(vec4 val1, vec4 val2, float k){
+    vec4 res1 = val1;
+    vec4 res2 = val2;
+    res1.w = smin(val2.w,val1.w,k);
+    res2.w = smin(val1.w,val2.w,k);
+    return (val1.w < val2.w)?res1:res2;
+}
+
+float sdBox(vec3 p, vec3 s) {
+    p = abs(p)-s;
+    return length(max(p, 0.))+min(max(p.x, max(p.y, p.z)), 0.);
+}
+
+float sdRoundCone( vec3 p, float r1, float r2, float h )
+{
+  vec2 q = vec2( length(p.xz), p.y );
+    
+  float b = (r1-r2)/h;
+  float a = sqrt(1.0-b*b);
+  float k = dot(q,vec2(-b,a));
+    
+  if( k < 0.0 ) return length(q) - r1;
+  if( k > a*h ) return length(q-vec2(0.0,h)) - r2;
+        
+  return dot(q, vec2(a,b) ) - r1;
+}
+
+float sdEllipsoid( vec3 p, vec3 r )
+{
+  float k0 = length(p/r);
+  float k1 = length(p/(r*r));
+  return k0*(k0-1.0)/k1;
+}
+
+float sdCappedTorus(in vec3 p, in vec2 sc, in float ra, in float rb)
+{
+  p.x = abs(p.x);
+  float k = (sc.y*p.x>sc.x*p.y) ? dot(p.xy,sc) : length(p.xy);
+  return sqrt( dot(p,p) + ra*ra - 2.0*ra*k ) - rb;
+}
+
+float foot(vec3 p) {
+    vec3 prevP = p;
+    
+    p.x = abs(p.x);
+    p.x-=0.1;
+    p*=matRotateY(radians(-30.0));
+    float d = sdEllipsoid(p,vec3(0.05,0.05,0.15));
+    p = prevP;
+    float d2 = sdEllipsoid(p-vec3(0.0,0.0,-0.08),vec3(0.05,0.05,0.15));
+    d = smin(d,d2,0.02);
+    d2 = sdEllipsoid(p-vec3(0.0,0.0,0.12),vec3(0.05,0.05,0.15));
+    d = smin(d,d2,0.02);
+    p*=matRotateX(radians(-20.0));
+    d2 = sdEllipsoid(p-vec3(0.0,0.2,0.05),vec3(0.05,0.2,0.05));
+    d = smin(d,d2,0.03);
+    return d;
+}
+
+float leg(vec3 p) {
+    vec3 prevP = p;
+    p*=matRotateX(radians(-20.0));
+    float d = sdRoundCone(p-vec3(0.0,0.2,0.05),0.05,0.15,0.3);
+    return d;
+}
+
+float body(vec3 p){
+    vec3 prevP = p;
+    p-=vec3(0,0.8,-0.2);
+    const float k = 1.5; // or some other amount
+    float c = cos(k*p.x);
+    float s = sin(k*p.x);
+    mat2  m = mat2(c,-s,s,c);
+    vec3  q = vec3(m*p.xy,p.z);
+    
+    float d = sdEllipsoid(q,vec3(0.5,0.4,0.9));
+    return d;
+}
+
+float tail(vec3 p){
+    vec3 prevP = p;
+    
+    float d = sdEllipsoid(p-vec3(0,0.8,0.7),vec3(0.3,0.12,0.7));
+    p*=matRotateX(radians(-15.0));
+    float d2 = sdEllipsoid(p-vec3(0,0.85,0.7),vec3(0.3,0.12,0.8));
+    return smin(d,d2,0.1);
+}
+
+float head(vec3 p){
+    vec3 prevP = p;
+    p*=matRotateX(radians(10.0));
+    float d = sdRoundCone(p-vec3(0,1.3,-0.28),0.3,0.23,0.5);
+    p = prevP;
+    float d2 = length(p-vec3(0,1.6,-0.65))-0.25;
+    d = smin(d,d2,0.05);
+    return d;
+}
+
+float wing(vec3 p){
+    vec3 prevP = p;
+    p*=matRotateX(radians(-10.0))*matRotateY(radians(5.0));
+    
+    float d = sdEllipsoid(p-vec3(0.05,1.0,-0.1),vec3(0.1,0.25,0.65));
+    p*=matRotateX(radians(10.0));
+    float d2 = sdEllipsoid(p-vec3(-0.05,1.05,0.2),vec3(0.1,0.25,0.65));
+    return smin(d,d2,0.05);
+}
+
+float mouth(vec3 p){
+    vec3 prevP = p;
+    float d = sdEllipsoid(p-vec3(0,1.6,-0.95),vec3(0.1,0.04,0.1));
+    return d;
+}
+
+float mouth2(vec3 p){
+    vec3 prevP = p;
+    float d = sdCappedTorus(p-vec3(0,1.55,-0.91),vec2(0.1,0.04),0.13,0.02);
+    return d;
+}
+
+float eye(vec3 p){
+    vec3 prevP = p;
+    p.y*=1.3;
+    float d = length(p-vec3(-0.02,1.74,-0.76))-0.05;
+    return d;
+}
+
+vec4 GetDist(vec3 p) {
+    
+    vec3 prevP = p;
+    
+    p.x = abs(p.x);
+    p.x-=0.25;
+    p*=matRotateY(radians(-20.0));
+    float fd = foot(p);
+    float ld = leg(p);
+    
+    p = prevP;
+    p*=matRotateX(radians(-20.0));
+    float bd = body(p);
+    p = prevP;
+    float hd = head(p);
+    float td = tail(p);
+    
+    p.x = abs(p.x);
+    p.x-=0.39;
+    float wd = wing(p);
+    
+    p = prevP;
+    float md = mouth(p);
+    float md2 = mouth2(p);
+    
+    p.x = abs(p.x);
+    p.x-=0.16;
+    p.y-=0.4;
+    p.z+= 0.01;
+    float ed = eye(p);
+    
+    p = prevP;
+    p*=2.0;
+    p.x = abs(p.x);
+    p.x-=0.37;
+    p.y-=2.16;
+    p.z+= 0.84;
+    float ed2 = eye(p);
+    
+    p = prevP;
+    p.x*=fbm(p*1.5)*4.5;
+    p.z*=fbm(p*2.6)*4.0;
+    p.x*=0.6;
+    p.y*=12.0;
+    p.y+=1.7;
+    float shit = (length(p-vec3(0.0,0.0,0.3))-0.7)*0.3;
+    
+    float n = hash12(p.xz*10.0)*0.12;
+    vec4 resFoot = vec4(vec3(0.9,0.5,0.4)+n,fd);
+    vec4 resLeg = vec4(vec3(0.5,0.5,0.5)+n,ld);
+    vec4 resBody = vec4(vec3(0.8,0.8,0.8)+n,bd);
+    vec4 resHead = vec4(vec3(0.4,0.4,0.45)+n,hd);
+    vec4 resTail = vec4(vec3(0.2,0.2,0.2)+n,td);
+    vec4 resWing = vec4(vec3(0.55,0.6,0.6)+n,wd);
+    vec4 resMouth = vec4(vec3(1.0,0.5,0.6)+n,md);
+    vec4 resMouth2 = vec4(vec3(1.0)+n,md2);
+    vec4 resEye = vec4(vec3(1.0,0.6,0.6)+n,ed);
+    vec4 resEye2 = vec4(vec3(0.1)+n,ed2);
+    vec4 resShit = vec4(vec3(0.9)+n,shit*0.6);
+    
+    vec4 model = combine(resFoot,resLeg,0.03);
+    model = combine(model,resBody,0.1);
+    model = combine(model,resHead,0.07);
+    model = combine(model,resTail,0.1);
+    model = combine(model,resWing,0.1);
+    model = combine(model,resMouth,0.1);
+    model = combine(model,resMouth2,0.02);
+    model = combine(model,resEye,0.07);
+    model = combine(model,resEye2,0.0);
+    model = combine(model,resShit,0.0);
+    return model;
+}
+
+vec4 RayMarch(vec3 ro, vec3 rd) {
+    vec4 r = vec4(0.0,0.0,0.0,1.0);
+    
+    float lastDistEval = 1e10; 
+    float dist;
+    for(int i=0; i<MAX_STEPS; i++) {
+        vec3 p = ro + rd*r.w;
+        vec4 dS = GetDist(p);
+        dist =  dS.w;
+        r.w += dS.w;
+        r.rgb = dS.xyz;
+        
+		if (lastDistEval < EDGE_WIDTH && dist > lastDistEval + 0.001) {
+            edge = 1.0;
+		}
+        if (dist < lastDistEval) lastDistEval = dist;
+        
+        if(r.w>MAX_DIST || dS.w<SURF_DIST) break;
+    }
+    
+    return r;
+}
+
+vec3 GetNormal(vec3 p) {
+    float d = GetDist(p).w;
+    vec2 e = vec2(.001, 0);
+    
+    vec3 n = d - vec3(
+        GetDist(p-e.xyy).w,
+        GetDist(p-e.yxy).w,
+        GetDist(p-e.yyx).w);
+    
+    return normalize(n);
+}
+
+vec2 GetLight(vec3 p) {
+    vec3 lightPos = vec3(3,5,0);
+    vec3 l = normalize(lightPos-p);
+    vec3 n = GetNormal(p);
+    
+    float dif = clamp(dot(n, l)*.5+.5, 0., 1.);
+    float d = RayMarch(p+n*SURF_DIST*2., l).w;
+    
+    float lambert = max(.0, dot( n, l))*0.2;
+    
+
+    
+    return vec2((lambert+dif),0.9) ;
+}
+
+vec3 R(vec2 uv, vec3 p, vec3 l, float z) {
+    vec3 f = normalize(l-p),
+        r = normalize(cross(vec3(0,1,0), f)),
+        u = cross(f,r),
+        c = p+f*z,
+        i = c + uv.x*r + uv.y*u,
+        d = normalize(i-p);
+    return d;
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 uv = (fragCoord-.5*iResolution.xy)/iResolution.y;
+    vec2 prevUV = uv;
+    vec2 m = iMouse.xy/iResolution.xy;
+    float t = mod(iTime,8000.0);
+    vec3 col = vec3(0);
+    
+    vec3 ro = vec3(0, 3.5, 0.0);
+    #if USE_MOUSE == 1
+    ro.yz *= Rot(-m.y*3.14+1.);
+    ro.xz *= Rot(-m.x*6.2831);
+    #else
+    ro.yz *= Rot(radians(-45.0));
+    ro.xz *= Rot(radians((sin(t*0.2)*80.0)));
+    #endif
+    
+    vec3 rd = R(uv, ro, vec3(0,0.9,0), 1.0);
+	vec4 r = RayMarch(ro, rd);
+    
+    if(r.w<MAX_DIST) {
+        vec3 p = ro + rd * r.w;
+    
+        vec2 dif = GetLight(p);
+        col = vec3(dif.x)*r.rgb;
+        col *= dif.y;
+        
+    } else {
+        // background
+        //col =.84*max(mix(vec3(1.1)+(.1-length(uv.xy)/3.),vec3(1),.1),0.);
+        col = vec3(1.0);
+    }
+    
+    col = mix(col,vec3(0.1,0.1,0.1),edge);
+    
+    fragColor = vec4(col,1.0);
+}
+
+void main(void)
+{
+    mainImage(gl_FragColor, gl_FragCoord.xy);
+}

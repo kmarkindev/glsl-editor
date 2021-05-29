@@ -2,6 +2,7 @@
 
 bool App::OnInit()
 {
+	Time::GetInstance();
 	wxImage::AddHandler(new wxPNGHandler());
 
 	auto mainForm = new MainFrame(nullptr);

@@ -47,9 +47,12 @@ void MainFrame::RenderShader()
 
 void MainFrame::SetupUniforms()
 {
-	_shader->ClearUniforms();
-	
 	auto uniforms = _uniformsPanel->GetUniforms();
+
+	_shader->Uniform("_time", Time::GetInstance()->GetMilisCountFromStart());
+
+	auto canvasSize = _renderPanel->GetCanvasSize();
+	_shader->Uniform("_canvasRect", glm::vec2(std::get<0>(canvasSize), std::get<1>(canvasSize)));
 
 	for (auto dto : uniforms)
 	{

@@ -15,8 +15,9 @@ public:
 
 	void UseProgram();
 
-	void UniformBool(std::string location, bool value);
+	void Uniform(std::string location, bool value);
 	void Uniform(std::string location, float value);
+	void Uniform(std::string location, int value);
 	void Uniform(std::string location, glm::vec2 value);
 	void Uniform(std::string location, glm::vec3 value);
 	void Uniform(std::string location, glm::vec4 value);

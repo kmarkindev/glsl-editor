@@ -4,6 +4,7 @@
 #include "../CodePanel/CodePanel.h"
 #include "../UniformsPanel/UniformsPanel.h"
 #include "../MainToolbar/MainToolbar.h"
+#include "../Time/Time.h"
 
 #include <wx/wx.h>
 #include <wx/splitter.h>

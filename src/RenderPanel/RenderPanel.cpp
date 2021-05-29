@@ -35,3 +35,9 @@ void RenderPanel::Render(Shader* shader)
 	_renderer->Render(shader);
 	_glCanvas->SwapBuffers();
 }
+
+std::tuple<int, int> RenderPanel::GetCanvasSize()
+{
+	auto rect = _glCanvas->GetRect();
+	return std::make_tuple(rect.width, rect.height);
+}
