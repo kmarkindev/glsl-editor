@@ -53,6 +53,8 @@ private:
 
     void OnTypeSelectedHandler(wxCommandEvent& event);
 
+    std::string GetUniformType();
+
     enum class Ids {
         ComboBox = wxID_LAST + 1
     };

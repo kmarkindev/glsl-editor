@@ -47,9 +47,18 @@ void MainFrame::RenderShader()
 
 void MainFrame::SetupUniforms()
 {
-	//clear shader uniforms
-	//get uniforms from _uniformsPanel
-	//apply them to Shader
+	_shader->ClearUniforms();
+	
+	auto uniforms = _uniformsPanel->GetUniforms();
+
+	for (auto dto : uniforms)
+	{
+		if (dto)
+		{
+			dto->ApplyUniform(_shader);
+			delete dto;
+		}
+	}
 }
 
 void MainFrame::SetupPanels()

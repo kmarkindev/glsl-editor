@@ -2,7 +2,51 @@
 
 IUniformDTO* UniformLine::GetUniformDTO()
 {
-    return new UniformDTO<bool>(_nameCtrl->GetValue().ToStdString(), true);
+    auto name = _nameCtrl->GetValue().ToStdString();
+    auto type = GetUniformType();
+
+    if (type == wxT("Bool"))
+    {
+        return new UniformDTO<bool>(name, _boolCheckbox->GetValue());
+    }
+    else if (type == wxT("Float"))
+    {
+        double value = 0;
+        _floatXCtrl->GetValue().ToDouble(&value);
+        return new UniformDTO<float>(name, value);
+    }
+    else if (type == wxT("Float2"))
+    {
+        double value = 0;
+        double value2 = 0;
+        _float2XCtrl->GetValue().ToDouble(&value);
+        _float2YCtrl->GetValue().ToDouble(&value2);
+        return new UniformDTO<glm::vec2>(name, glm::vec2(value, value2));
+    }
+    else if (type == wxT("Float3"))
+    {
+        double value = 0;
+        double value2 = 0;
+        double value3 = 0;
+        _float3XCtrl->GetValue().ToDouble(&value);
+        _float3YCtrl->GetValue().ToDouble(&value2);
+        _float3ZCtrl->GetValue().ToDouble(&value3);
+        return new UniformDTO<glm::vec3>(name, glm::vec3(value, value2, value3));
+    }
+    else if (type == wxT("Float4"))
+    {
+        double value = 0;
+        double value2 = 0;
+        double value3 = 0;
+        double value4 = 0;
+        _float4XCtrl->GetValue().ToDouble(&value);
+        _float4YCtrl->GetValue().ToDouble(&value2);
+        _float4ZCtrl->GetValue().ToDouble(&value3);
+        _float4WCtrl->GetValue().ToDouble(&value4);
+        return new UniformDTO<glm::vec4>(name, glm::vec4(value, value2, value3, value4));
+    }
+    else
+        return nullptr;
 }
 
 UniformLine::UniformLine(wxWindow *parent)
@@ -132,4 +176,9 @@ void UniformLine::OnTypeSelectedHandler(wxCommandEvent& event)
         assert(false);
 
     _sizer->Layout();
+}
+
+std::string UniformLine::GetUniformType()
+{
+    return _typeCtrl->GetValue().ToStdString();
 }

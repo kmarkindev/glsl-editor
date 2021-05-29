@@ -12,7 +12,7 @@ class UniformsPanel : public wxScrolled<wxPanel>
 public:
 	UniformsPanel(wxWindow* parent,
 		wxPoint position = wxDefaultPosition, wxSize size = wxDefaultSize);
-	std::vector<IUniformDTO> GetUniforms();
+	std::vector<IUniformDTO*> GetUniforms();
 	UniformLine* AddUniform();
 
 private:

@@ -6,15 +6,25 @@ UniformsPanel::UniformsPanel(wxWindow* parent, wxPoint position, wxSize size)
 {
     SetSizer(new wxBoxSizer(wxVERTICAL));
 
-    for(int i = 0; i < 20; ++i)
+    for(int i = 0; i < 3; ++i)
         AddUniform();
 
     SetScrollRate(1, 1);
 }
 
-std::vector<IUniformDTO> UniformsPanel::GetUniforms()
+std::vector<IUniformDTO*> UniformsPanel::GetUniforms()
 {
-    return std::vector<IUniformDTO>();
+    auto uniforms = std::vector<IUniformDTO*>();
+
+    auto sizer = GetSizer();
+
+    for (auto* line : sizer->GetChildren())
+    {
+        auto dto = ((UniformLine*)line->GetWindow())->GetUniformDTO();
+        uniforms.push_back(dto);
+    }
+
+    return uniforms;
 }
 
 UniformLine* UniformsPanel::AddUniform()
