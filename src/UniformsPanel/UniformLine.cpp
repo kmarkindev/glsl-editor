@@ -27,13 +27,13 @@ UniformLine::UniformLine(wxWindow *parent)
     ShowBool();
 
     _sizer = new wxBoxSizer(wxHORIZONTAL);
-    _sizer->Add(_nameCtrl, 1, wxEXPAND);
+    _sizer->Add(_nameCtrl, 0, wxEXPAND);
     _sizer->Add(_typeCtrl, 0, wxEXPAND);
-    _sizer->Add(_boolPanel, 1, wxEXPAND);
-    _sizer->Add(_floatPanel, 1, wxEXPAND);
-    _sizer->Add(_float2Panel, 1, wxEXPAND);
-    _sizer->Add(_float3Panel, 1, wxEXPAND);
-    _sizer->Add(_float4Panel, 1, wxEXPAND);
+    _sizer->Add(_boolPanel, 0, wxEXPAND);
+    _sizer->Add(_floatPanel, 0, wxEXPAND);
+    _sizer->Add(_float2Panel, 0, wxEXPAND);
+    _sizer->Add(_float3Panel, 0, wxEXPAND);
+    _sizer->Add(_float4Panel, 0, wxEXPAND);
 
     SetSizer(_sizer);
 }
@@ -49,30 +49,30 @@ void UniformLine::CreateInputControls()
     // Bool
     _boolPanel = new wxPanel(this);
     _boolPanel->SetSizer(sizer = new wxBoxSizer(wxHORIZONTAL));
-    sizer->Add(_boolCheckbox = new wxCheckBox(_boolPanel, wxID_ANY, wxT("Is True")), 1, wxEXPAND | wxALL, 2);
+    sizer->Add(_boolCheckbox = new wxCheckBox(_boolPanel, wxID_ANY, wxT("Is True")), 0, wxEXPAND | wxALL, 2);
     _boolCheckbox->SetSize(wxSize(50, 50));
     // Float
     _floatPanel = new wxPanel(this);
     _floatPanel->SetSizer(sizer = new wxBoxSizer(wxHORIZONTAL));
-    sizer->Add(_floatXCtrl = new wxTextCtrl(_floatPanel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
+    sizer->Add(_floatXCtrl = new wxTextCtrl(_floatPanel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
     // Float2
     _float2Panel = new wxPanel(this);
     _float2Panel->SetSizer(sizer = new wxBoxSizer(wxHORIZONTAL));
-    sizer->Add(_float2XCtrl = new wxTextCtrl(_float2Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
-    sizer->Add(_float2YCtrl = new wxTextCtrl(_float2Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
+    sizer->Add(_float2XCtrl = new wxTextCtrl(_float2Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
+    sizer->Add(_float2YCtrl = new wxTextCtrl(_float2Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
     // Float3
     _float3Panel = new wxPanel(this);
     _float3Panel->SetSizer(sizer = new wxBoxSizer(wxHORIZONTAL));
-    sizer->Add(_float3XCtrl = new wxTextCtrl(_float3Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
-    sizer->Add(_float3YCtrl = new wxTextCtrl(_float3Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
-    sizer->Add(_float3ZCtrl = new wxTextCtrl(_float3Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
+    sizer->Add(_float3XCtrl = new wxTextCtrl(_float3Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
+    sizer->Add(_float3YCtrl = new wxTextCtrl(_float3Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
+    sizer->Add(_float3ZCtrl = new wxTextCtrl(_float3Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
     // Float4
     _float4Panel = new wxPanel(this);
     _float4Panel->SetSizer(sizer = new wxBoxSizer(wxHORIZONTAL));
-    sizer->Add(_float4XCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
-    sizer->Add(_float4YCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
-    sizer->Add(_float4ZCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
-    sizer->Add(_float4WCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 1, wxEXPAND | wxALL, 2);
+    sizer->Add(_float4XCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
+    sizer->Add(_float4YCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
+    sizer->Add(_float4ZCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
+    sizer->Add(_float4WCtrl = new wxTextCtrl(_float4Panel, wxID_ANY), 0, wxEXPAND | wxALL, 2);
 }
 
 void UniformLine::ShowBool()
