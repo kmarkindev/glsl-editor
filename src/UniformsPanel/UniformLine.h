@@ -1,23 +1,28 @@
 #pragma once
 
+#include "UniformsPanel.h"
 #include "IUniformDTO.h"
 #include "UniformDTO.h"
 
 #include <wx/wx.h>
 #include <string>
 
+class UniformsPanel;
+
 class UniformLine : public wxPanel
 {
 public:
 
-    UniformLine(wxWindow* parent);
+    UniformLine(wxWindow* parent, UniformsPanel* mainPanel);
 
     IUniformDTO* GetUniformDTO();
 
 private:
+    wxButton* _deleteBtn;
     wxTextCtrl* _nameCtrl;
     wxComboBox* _typeCtrl;
     wxBoxSizer* _sizer;
+    UniformsPanel* _mainPanel;
 
     //TODO: move to separate classes
 
@@ -52,11 +57,14 @@ private:
     void HideActivePanel();
 
     void OnTypeSelectedHandler(wxCommandEvent& event);
+    void DeleteButtonHandler(wxCommandEvent& event);
 
     std::string GetUniformType();
 
-    enum class Ids {
-        ComboBox = wxID_LAST + 1
+    enum class Ids : int 
+    {
+        ComboBox = wxID_LAST + 1,
+        Delete,
     };
 
 };

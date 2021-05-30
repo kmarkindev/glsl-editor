@@ -51,8 +51,9 @@ IUniformDTO* UniformLine::GetUniformDTO()
         return nullptr;
 }
 
-UniformLine::UniformLine(wxWindow *parent)
-    : wxPanel(parent, wxID_ANY)
+UniformLine::UniformLine(wxWindow *parent, UniformsPanel* mainPanel)
+    : wxPanel(parent, wxID_ANY),
+    _mainPanel(mainPanel)
 {
     SetSize(wxSize(100, 50));
 
@@ -64,15 +65,19 @@ UniformLine::UniformLine(wxWindow *parent)
     typeList->Add(wxT("Float3"));
     typeList->Add(wxT("Float4"));
 
+    _deleteBtn = new wxButton(this, (int)Ids::Delete, wxT("X"));
+    _deleteBtn->SetSize(wxSize(50, 50));
     _nameCtrl = new wxTextCtrl(this, wxID_ANY);
     _typeCtrl = new wxComboBox(this, (int)Ids::ComboBox,
         wxT("Bool"), wxDefaultPosition, wxDefaultSize, *typeList, wxCB_READONLY);
     Connect((int)Ids::ComboBox, wxEVT_COMBOBOX, wxCommandEventHandler(UniformLine::OnTypeSelectedHandler));
+    Connect((int)Ids::Delete, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(UniformLine::DeleteButtonHandler));
 
     CreateInputControls();
     ShowBool();
 
     _sizer = new wxBoxSizer(wxHORIZONTAL);
+    _sizer->Add(_deleteBtn, 0, wxEXPAND);
     _sizer->Add(_nameCtrl, 0, wxEXPAND);
     _sizer->Add(_typeCtrl, 0, wxEXPAND);
     _sizer->Add(_boolPanel, 0, wxEXPAND);
@@ -178,6 +183,13 @@ void UniformLine::OnTypeSelectedHandler(wxCommandEvent& event)
         assert(false);
 
     _sizer->Layout();
+}
+
+void UniformLine::DeleteButtonHandler(wxCommandEvent& event)
+{
+    auto main = _mainPanel;
+    Destroy();
+    main->RefreshList();
 }
 
 std::string UniformLine::GetUniformType()

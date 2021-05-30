@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+class UniformLine;
+
 class UniformsPanel : public wxScrolled<wxPanel>
 {
 public:
@@ -14,9 +16,9 @@ public:
 		wxPoint position = wxDefaultPosition, wxSize size = wxDefaultSize);
 	std::vector<IUniformDTO*> GetUniforms();
 	UniformLine* AddUniform();
+	void RefreshList();
 
 private:
-    std::vector<UniformLine> _lines;
 	wxBoxSizer* _subSizer;
 
 	void AddButtonHandler(wxCommandEvent& event);

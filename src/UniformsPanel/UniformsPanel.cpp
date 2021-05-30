@@ -1,8 +1,7 @@
 #include "UniformsPanel.h"
 
 UniformsPanel::UniformsPanel(wxWindow* parent, wxPoint position, wxSize size)
-	: wxScrolled<wxPanel>(parent, wxID_ANY, position, size),
-	_lines(std::vector<UniformLine>())
+	: wxScrolled<wxPanel>(parent, wxID_ANY, position, size)
 {
     auto mainSizer = new wxBoxSizer(wxVERTICAL);
     _subSizer = new wxBoxSizer(wxVERTICAL);
@@ -34,13 +33,18 @@ std::vector<IUniformDTO*> UniformsPanel::GetUniforms()
 
 UniformLine* UniformsPanel::AddUniform()
 {
-    auto newLine = new UniformLine(this);
+    auto newLine = new UniformLine(this, this);
 
     _subSizer->Add(newLine, 0, wxEXPAND | wxALL, 5);
     _subSizer->FitInside(this);
     Layout();
 
     return newLine;
+}
+
+void UniformsPanel::RefreshList()
+{
+    _subSizer->Layout();
 }
 
 void UniformsPanel::AddButtonHandler(wxCommandEvent& event)
