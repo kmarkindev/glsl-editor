@@ -41,6 +41,7 @@ void MainToolbar::LoadBitmaps()
 	plusFontSizeBitmap = LoadToolbarBitmap(wxT("resources/toolbar_font_plus.png"));
 	minusFontSizeBitmap = LoadToolbarBitmap(wxT("resources/toolbar_font_minus.png"));
 	loadShaderBitmap = LoadToolbarBitmap(wxT("resources/toolbar_load.png"));
+	helpMessageBitmap = LoadToolbarBitmap(wxT("resources/toolbar_help.png"));
 }
 
 void MainToolbar::SetupButtons()
@@ -67,6 +68,11 @@ void MainToolbar::SetupButtons()
 		wxT("Start"), *startRenderBitmap, wxT("Starts load sources loop"));
 	AddTool((int)Ids::StopLoadSrcLoop,
 		wxT("Stop"), *stopRenderBitmap, wxT("Pauses load sources loop"));
+
+	AddSeparator();
+
+	AddTool((int)Ids::Help, wxT("Help"), *helpMessageBitmap, 
+		wxT("Shows all built in unifforms"));
 
 	EnableTool((int)Ids::StopRenderLoop, false);
 	EnableTool((int)Ids::StopLoadSrcLoop, false);
@@ -96,6 +102,8 @@ void MainToolbar::BindEvents()
 		wxCommandEventHandler(MainToolbar::StopLoadSrcLoopButtonHandler));
 	Connect((int)Ids::LoadSrcTimer, wxEVT_TIMER,
 		wxCommandEventHandler(MainToolbar::LoadSrcTimerHandler));
+	Connect((int)Ids::Help, wxEVT_COMMAND_TOOL_CLICKED,
+		wxCommandEventHandler(MainToolbar::HelpButtonHandler));
 }
 
 void MainToolbar::RenderButtonHandler(wxCommandEvent& event)
@@ -162,4 +170,9 @@ void MainToolbar::StopLoadSrcLoopButtonHandler(wxCommandEvent& event)
 void MainToolbar::LoadSrcTimerHandler(wxCommandEvent& event)
 {
 	_mainFrame->LoadSrc(_mainFrame->GetSrc());
+}
+
+void MainToolbar::HelpButtonHandler(wxCommandEvent& event)
+{
+	wxMessageBox("float _time - time since app is started in ms;\nvec2 _canvasRect - size of render canvas (width, height);");
 }

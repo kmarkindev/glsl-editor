@@ -25,6 +25,7 @@ private:
 	wxBitmap* plusFontSizeBitmap;
 	wxBitmap* minusFontSizeBitmap;
 	wxBitmap* loadShaderBitmap;
+	wxBitmap* helpMessageBitmap;
 
 	void LoadBitmaps();
 	void SetupButtons();
@@ -40,6 +41,7 @@ private:
 	void StartLoadSrcLoopButtonHandler(wxCommandEvent& event);
 	void StopLoadSrcLoopButtonHandler(wxCommandEvent& event);
 	void LoadSrcTimerHandler(wxCommandEvent& event);
+	void HelpButtonHandler(wxCommandEvent& event);
 
 	enum class Ids : int
 	{
@@ -52,6 +54,7 @@ private:
 		LoadSrc,
 		StartLoadSrcLoop,
 		StopLoadSrcLoop,
-		LoadSrcTimer
+		LoadSrcTimer,
+		Help
 	};
 };

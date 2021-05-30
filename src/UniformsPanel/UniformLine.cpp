@@ -5,6 +5,8 @@ IUniformDTO* UniformLine::GetUniformDTO()
     auto name = _nameCtrl->GetValue().ToStdString();
     auto type = GetUniformType();
 
+    //TODO: use State
+
     if (type == wxT("Bool"))
     {
         return new UniformDTO<bool>(name, _boolCheckbox->GetValue());
@@ -54,7 +56,7 @@ UniformLine::UniformLine(wxWindow *parent)
 {
     SetSize(wxSize(100, 50));
 
-    // TODO: need flyweight
+    // TODO: use flyweight
     auto typeList = new wxArrayString();
     typeList->Add(wxT("Bool"));
     typeList->Add(wxT("Float"));
@@ -86,7 +88,7 @@ void UniformLine::CreateInputControls()
 {
     // qui spem ponitur (give up hope everDyone who enters here)
 
-    // TODO: fix control sizes. Now it's too large
+    // FIX: fix control sizes. Now it's too large
 
     wxBoxSizer* sizer = nullptr;
 
