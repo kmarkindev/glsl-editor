@@ -4,12 +4,17 @@ UniformsPanel::UniformsPanel(wxWindow* parent, wxPoint position, wxSize size)
 	: wxScrolled<wxPanel>(parent, wxID_ANY, position, size),
 	_lines(std::vector<UniformLine>())
 {
-    SetSizer(new wxBoxSizer(wxVERTICAL));
+    auto mainSizer = new wxBoxSizer(wxVERTICAL);
+    _subSizer = new wxBoxSizer(wxVERTICAL);
 
-    for(int i = 0; i < 3; ++i)
-        AddUniform();
+    mainSizer->Add(new wxButton(this, (int)Ids::Add, wxT("Add uniform")), 0, wxEXPAND);
+    mainSizer->Add(_subSizer, 1, wxEXPAND);
 
-    SetScrollRate(1, 1);
+    Connect((int)Ids::Add, wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler(UniformsPanel::AddButtonHandler));
+
+    SetSizer(mainSizer);
+    SetScrollRate(2, 2);
 }
 
 std::vector<IUniformDTO*> UniformsPanel::GetUniforms()
@@ -31,9 +36,14 @@ UniformLine* UniformsPanel::AddUniform()
 {
     auto newLine = new UniformLine(this);
 
-    auto sizer = GetSizer();
-    sizer->Add(newLine, 0, wxEXPAND | wxALL, 5);
-    sizer->FitInside(this);
+    _subSizer->Add(newLine, 0, wxEXPAND | wxALL, 5);
+    _subSizer->FitInside(this);
+    Layout();
 
     return newLine;
+}
+
+void UniformsPanel::AddButtonHandler(wxCommandEvent& event)
+{
+    AddUniform();
 }

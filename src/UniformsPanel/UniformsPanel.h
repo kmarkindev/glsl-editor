@@ -17,4 +17,12 @@ public:
 
 private:
     std::vector<UniformLine> _lines;
+	wxBoxSizer* _subSizer;
+
+	void AddButtonHandler(wxCommandEvent& event);
+
+	enum class Ids : int
+	{
+		Add = wxID_LAST + 1
+	};
 };
