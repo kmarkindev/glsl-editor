@@ -29,7 +29,7 @@ jobs:
     - name: Create zip archive
       uses: vimtor/action-zip@v1
       with:
-        files: build\bin\Release
+        files: build\bin
         dest: glsl_editor.zip
         
     - name: Delete old release
