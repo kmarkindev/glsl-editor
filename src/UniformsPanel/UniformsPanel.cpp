@@ -20,7 +20,7 @@ std::vector<IUniformDTO*> UniformsPanel::GetUniforms()
 {
     auto uniforms = std::vector<IUniformDTO*>();
 
-    auto sizer = GetSizer();
+    auto& sizer = _subSizer;
 
     for (auto* line : sizer->GetChildren())
     {
